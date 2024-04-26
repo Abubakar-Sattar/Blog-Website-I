@@ -194,6 +194,7 @@ header {
     padding: 5px 10px; /* Add padding */
     cursor: pointer; /* Change cursor to pointer on hover */
     border-radius: 5px; /* Add border radius for rounded corners */
+    margin-left: 15px;
 }
 
 .delete-btn:hover {
