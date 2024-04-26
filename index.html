@@ -75,32 +75,58 @@
             
             <div id="commentsContainer"></div>
 
-            
             <script>
-                document.getElementById("commentForm").addEventListener("submit", function(event) {
-                    event.preventDefault(); // Prevent form submission
-
-                    // Retrieve form data
-                    var name = document.getElementById("name").value;
-                    var profileUrl = document.getElementById("profile_url").value;
-                    var commentText = document.getElementById("comment").value;
-
-                    // Format the comment
+            // Retrieve comments from Local Storage when the page loads
+            window.onload = function() {
+                var comments = JSON.parse(localStorage.getItem('comments')) || [];
+                displayComments(comments);
+            }
+            
+            // Modify the comment submission event listener to save comments to Local Storage
+            document.getElementById("commentForm").addEventListener("submit", function(event) {
+                event.preventDefault(); // Prevent form submission
+            
+                var name = document.getElementById("name").value;
+                var profileUrl = document.getElementById("profile_url").value;
+                var commentText = document.getElementById("comment").value;
+            
+                var comment = {
+                    name: name,
+                    profileUrl: profileUrl,
+                    commentText: commentText
+                };
+            
+                // Retrieve existing comments or initialize an empty array
+                var comments = JSON.parse(localStorage.getItem('comments')) || [];
+                comments.push(comment);
+                
+                // Save comments to Local Storage
+                localStorage.setItem('comments', JSON.stringify(comments));
+            
+                // Display comments
+                displayComments(comments);
+            
+                // Reset the form
+                document.getElementById("commentForm").reset();
+            });
+            
+            // Function to display comments
+            function displayComments(comments) {
+                var commentContainer = document.getElementById("commentsContainer");
+                commentContainer.innerHTML = ""; // Clear existing comments
+                
+                comments.forEach(function(comment) {
                     var formattedComment = "<div class='comment'>" +
-                                            "<div class='comment-header'><strong><a href='" + profileUrl + "'>" + name + "</a></strong></div>" +
-                                            "<div class='comment-body'>" + commentText + "</div>" +
-                                            "</div>";
+                                        "<div class='comment-header'><strong><a href='" + comment.profileUrl + "'>" + comment.name + "</a></strong></div>" +
+                                        "<div class='comment-body'>" + comment.commentText + "</div>" +
+                                        "</div>";
                     
-                    // Display the comment
-                    var commentContainer = document.getElementById("commentsContainer");
                     var commentElement = document.createElement("div");
                     commentElement.innerHTML = formattedComment;
                     commentContainer.appendChild(commentElement);
-
-                    // Reset the form
-                    document.getElementById("commentForm").reset();
                 });
-            </script>
+            }
+        </script>
 
 
             <footer>
