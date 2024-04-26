@@ -76,56 +76,79 @@
             <div id="commentsContainer"></div>
 
             <script>
-            // Retrieve comments from Local Storage when the page loads
-            window.onload = function() {
-                var comments = JSON.parse(localStorage.getItem('comments')) || [];
-                displayComments(comments);
+// Retrieve comments from Local Storage when the page loads
+window.onload = function() {
+    var comments = JSON.parse(localStorage.getItem('comments')) || [];
+    displayComments(comments);
+}
+
+// Define your secret key
+var secretKey = "123"; // Replace "YourSecretKey" with your actual secret key
+
+// Modify the comment submission event listener to save comments to Local Storage
+document.getElementById("commentForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // Prevent form submission
+
+    var name = document.getElementById("name").value;
+    var profileUrl = document.getElementById("profile_url").value;
+    var commentText = document.getElementById("comment").value;
+
+    var comment = {
+        name: name,
+        profileUrl: profileUrl,
+        commentText: commentText
+    };
+
+    // Retrieve existing comments or initialize an empty array
+    var comments = JSON.parse(localStorage.getItem('comments')) || [];
+    comments.push(comment);
+    
+    // Save comments to Local Storage
+    localStorage.setItem('comments', JSON.stringify(comments));
+
+    // Display comments
+    displayComments(comments);
+
+    // Reset the form
+    document.getElementById("commentForm").reset();
+});
+
+// Function to display comments
+function displayComments(comments) {
+    var commentContainer = document.getElementById("commentsContainer");
+    commentContainer.innerHTML = ""; // Clear existing comments
+    
+    comments.forEach(function(comment, index) {
+        var formattedComment = "<div class='comment'>" +
+                            "<div class='comment-header'><strong><a href='" + comment.profileUrl + "'>" + comment.name + "</a></strong>" +
+                            "<button class='delete-btn' data-index='" + index + "'>Delete</button></div>" + // Add delete button
+                            "<div class='comment-body'>" + comment.commentText + "</div>" +
+                            "</div>";
+        
+        var commentElement = document.createElement("div");
+        commentElement.innerHTML = formattedComment;
+        commentContainer.appendChild(commentElement);
+    });
+    
+    // Attach event listener to delete buttons
+    var deleteButtons = document.querySelectorAll('.delete-btn');
+    deleteButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            // Prompt user for secret key
+            var userInput = prompt("Enter the secret key:");
+            if (userInput === secretKey) {
+                var index = this.getAttribute('data-index');
+                comments.splice(index, 1); // Remove comment from array
+                localStorage.setItem('comments', JSON.stringify(comments)); // Update local storage
+                displayComments(comments); // Update displayed comments
+            } else {
+                alert("Incorrect secret key. Only the commenter or an authorized user can delete this comment.");
             }
-            
-            // Modify the comment submission event listener to save comments to Local Storage
-            document.getElementById("commentForm").addEventListener("submit", function(event) {
-                event.preventDefault(); // Prevent form submission
-            
-                var name = document.getElementById("name").value;
-                var profileUrl = document.getElementById("profile_url").value;
-                var commentText = document.getElementById("comment").value;
-            
-                var comment = {
-                    name: name,
-                    profileUrl: profileUrl,
-                    commentText: commentText
-                };
-            
-                // Retrieve existing comments or initialize an empty array
-                var comments = JSON.parse(localStorage.getItem('comments')) || [];
-                comments.push(comment);
-                
-                // Save comments to Local Storage
-                localStorage.setItem('comments', JSON.stringify(comments));
-            
-                // Display comments
-                displayComments(comments);
-            
-                // Reset the form
-                document.getElementById("commentForm").reset();
-            });
-            
-            // Function to display comments
-            function displayComments(comments) {
-                var commentContainer = document.getElementById("commentsContainer");
-                commentContainer.innerHTML = ""; // Clear existing comments
-                
-                comments.forEach(function(comment) {
-                    var formattedComment = "<div class='comment'>" +
-                                        "<div class='comment-header'><strong><a href='" + comment.profileUrl + "'>" + comment.name + "</a></strong></div>" +
-                                        "<div class='comment-body'>" + comment.commentText + "</div>" +
-                                        "</div>";
-                    
-                    var commentElement = document.createElement("div");
-                    commentElement.innerHTML = formattedComment;
-                    commentContainer.appendChild(commentElement);
-                });
-            }
+        });
+    });
+}
+
+
         </script>
 
 

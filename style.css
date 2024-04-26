@@ -187,3 +187,17 @@ header {
     text-decoration: underline;
 }
 
+.delete-btn {
+    background-color: #ff0000; /* Red background color */
+    color: #ffffff; /* White text color */
+    border: none; /* Remove border */
+    padding: 5px 10px; /* Add padding */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    border-radius: 5px; /* Add border radius for rounded corners */
+}
+
+.delete-btn:hover {
+    background-color: #cc0000; /* Darker red background color on hover */
+}
+
+
