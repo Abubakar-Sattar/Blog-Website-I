@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <a href="index.html"><img src="Logo/Logo Files/For Web/png/Color logo - no background.png" alt="" id="logo"></a>
+    <a href="index.html"><img src="Color logo - no background.png" alt="" id="logo"></a>
     <header>
         <h1>Welcome to Shield Guardian Insurance</h1>
     </header>
@@ -32,7 +32,7 @@
     <!-- Blog Post -->
     <section>
         <h2>Understanding the Importance of Insurance: Safeguarding Your Future</h2>
-        <img src="Images/img-main.jpg" alt="" height="400px" width="900px">
+        <img src="img-main.jpg" alt="" height="400px" width="900px">
         <p><!-- Your blog post content here --></p>
     </section>
 
